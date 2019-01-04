@@ -4,6 +4,7 @@
 #include <bitset>
 #include <queue>
 #include <sstream>
+#include <stack>
 
 template<class T>
 struct Node
@@ -32,6 +33,7 @@ public:
 	void addNode(Node<E>*);
 	void connNodes(Node<E>*, Node<E>*);
 	std::vector<Node<E>*> BFS() const;
+	std::vector<Node<E>*> DFS() const;
 	void print() const;
 
 
@@ -124,4 +126,45 @@ std::vector<Node<T>*> Graph<T>::BFS() const
 	return BFSnods;
 }
 
-sirumemqez
+template<class T>
+std::vector<Node<T>* > Graph<T>::DFS() const
+{
+	std::vector<Node<T>* > dfsList;
+	if (m_adj.empty()) {
+		return dfsList;
+	}
+	std::bitset<10> visited;
+	std::stack<Node<T>* > st;
+
+	st.push(*m_adj[0].begin());
+	dfsList.push_back(*m_adj[0].begin());
+	visited[(*m_adj[0].begin())->getIndex()] = true;
+	int count = 0;
+	std::list<Node<T>*> current = m_adj[0];
+
+	while (!st.empty()) 
+	{
+		count = 0;
+		for (auto it = current.begin(); it != current.end(); ++it) {
+			if (!visited[(*it)->getIndex()]) {
+				visited[(*it)->getIndex()] = true;
+				st.push(*it);
+				dfsList.push_back(*it);
+				current = m_adj[(*it)->getIndex()];
+				break;
+			}
+			else {
+				count++;
+			}
+		}
+
+		if (count == current.size()) {
+			current = m_adj[st.top()->getIndex()];
+			if (!st.empty()) {
+				st.pop();
+			}
+		}
+	}
+	return dfsList;
+
+}

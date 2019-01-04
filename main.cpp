@@ -24,8 +24,9 @@ int main()
 	obj.addNode(cc6);
 
 	obj.connNodes(cc1, cc2);
-	obj.connNodes(cc1, cc3);
-	//obj.connNodes(cc2, cc5);
+	obj.connNodes(cc2, cc3);
+	obj.connNodes(cc3, cc1);
+	obj.connNodes(cc2, cc5);
 	obj.connNodes(cc2, cc4);
 	obj.connNodes(cc3, cc5);
 	obj.connNodes(cc4, cc5);
@@ -33,8 +34,18 @@ int main()
 	obj.connNodes(cc5, cc6);
 
 	std::vector<Node<int>*> nodes = obj.BFS();
+	std::cout << "------------------BFS---------------------- " << std::endl;
+
 	std::for_each(nodes.begin(), nodes.end(), [](Node<int>* it) {std::cout << "<< " << it->name; });
 	std::cout << std::endl;
+	std::vector<int> vec;
+	std::cout << "-----------------DFS--------------------- " << std::endl;
+
+	std::vector<Node<int>*> list = obj.DFS();
+	std::for_each(list.begin(), list.end(), [](Node<int>* it) {std::cout << "<< " << it->name; });
+
+	std::cout << "\n-----------------print--------------------- " << std::endl;
+
 	obj.print();
 
 	system("pause");
