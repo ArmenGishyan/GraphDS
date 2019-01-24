@@ -5,11 +5,12 @@
 #include <queue>
 #include <sstream>
 #include <stack>
+#include <unordered_set>
 
 template<class T>
 struct Node
 {
-	Node(std::string name, T value = T()) :
+	Node(std::string name, T value = T(), int weight = 1) :
 		name(name), value(value)
 	{}
 	int getIndex() const
@@ -21,6 +22,7 @@ struct Node
 		return x;
 	}
 	std::string name;
+	int weight;
 	T value;
 };
 
@@ -38,15 +40,15 @@ public:
 
 
 private:
-	std::vector<std::list<Node<E>*>> m_adj;
+	std::vector<std::unordered_set<Node<E>*>> m_adj;
 };
 
 template<class T>
 void Graph<T>::addNode(Node<T>* node)
 {
-	std::list<Node<T>* > nodeTemp;
+	std::unordered_set<Node<T>* > nodeTemp;
 	
-	nodeTemp.push_back(node);
+	nodeTemp.insert(node);
 	m_adj.push_back(nodeTemp);
 }
 
@@ -59,11 +61,11 @@ void Graph<T>::connNodes(Node<T>* node1, Node<T>* node2)
 		bool flag2 = true;
 		auto itFirst = it->begin();
 		if (flag1 && (*itFirst)->name == node1->name) {
-			it->push_back(node2);
+			it->insert(node2);
 			flag1 = false;
 		}
 		if (flag2 && (*itFirst)->name == node2->name) {
-			it->push_back(node1);
+			it->insert(node1);
 			flag2 = false;
 		}
 		if (!flag1 && !flag2)
@@ -140,7 +142,7 @@ std::vector<Node<T>* > Graph<T>::DFS() const
 	dfsList.push_back(*m_adj[0].begin());
 	visited[(*m_adj[0].begin())->getIndex()] = true;
 	int count = 0;
-	std::list<Node<T>*> current = m_adj[0];
+	std::unordered_set<Node<T>*> current = m_adj[0];
 
 	while (!st.empty()) 
 	{
