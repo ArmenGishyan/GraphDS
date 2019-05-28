@@ -5,6 +5,8 @@
 #include "graph.h"
 #include <stack>
 #include <set>
+#include "commandspool.h"
+#include "commandline.h"
 
 
 int main(int argc, char *argv[])
@@ -14,6 +16,9 @@ int main(int argc, char *argv[])
   //  engine.findPath<Rectangle>();
   //  MainWindow w;
   //  w.show();
+    CommandsPool::init();
+    CommandLine cLine;
+    cLine.exec();
 
 	Graph<int> obj;
     Node<int>* ccA = new Node<int>("A");
@@ -88,45 +93,6 @@ int main(int argc, char *argv[])
 	obj.print();
 
 
-//    std::cout<<"----------------------------after delete--------------\n";
-//
-//    std::vector<Node<int>*> nodes1 = obj.BFS();
-//    std::cout << "------------------BFS---------------------- " << std::endl;
-//
-//    std::for_each(nodes1.begin(), nodes1.end(), [](Node<int>* it) {std::cout << "<< " << it->name(); });
-//    std::cout << std::endl;
-//    std::vector<int> vec1;
-//    std::cout << "-----------------DFS--------------------- " << std::endl;
-//
-//    std::vector<Node<int>*> list1 = obj.DFS();
-//    std::for_each(list1.begin(), list1.end(), [](Node<int>* it) {std::cout << "<< " << it->name(); });
-//
-//    std::cout << "\n-----------------print--------------------- " << std::endl;
-//
-//    obj.print();
-//
-//    std::cout << "-----------------DFS--------------------- " << std::endl;
-//    std::vector<Node<int>*> list2 = obj.DFS();
-//    std::for_each(list2.begin(), list2.end(), [](Node<int>* it) {std::cout << "<< " << it->name(); });
-//
-//    std::cout << "\n-----------------print--------------------- " << std::endl;
-   // std::vector<int> vec34 = {1,2,3,4,5,6,7};
-   // std::remove(std::find(vec34.begin(), vec34.end(), 3), vec.end());
-
-
-      // qmlRegisterType<Person>("People", 1,0, "Person");
-
-    //  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    //  QQmlApplicationEngine qmengine;
-    //  QVariantList rectlist;
-    //  rectlist<<QRect{50, 30, 100, 100}
-    //          << QRect{200, 20, 30, 30}
-    //          <<QRect{300, 300, 200, 33}
-    //          <<QRect{400, 23, 44, 55};
-    //  qmengine.rootContext()->setContextProperty("rectlist", rectlist);
-    //  qmengine.load(QUrl(QStringLiteral("qrc:/example.qml")));
-    //  if (qmengine.rootObjects().isEmpty())
-      //        return -1;
 
 
     return 0;
