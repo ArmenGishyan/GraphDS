@@ -10,15 +10,17 @@ class Engine
 {
 public:
     void createGraph(int nodeCount);
-    static std::unique_ptr<Engine> getInstance();
+	void printGraph() const;
+	void connNodes(const std::string& fisrt, const std::string& second);
+    static std::shared_ptr<Engine> getInstance();
     Engine();
 
 // private methods
 private:
 
 private:
-    static std::unique_ptr<Engine> m_engine;
-    std::unique_ptr<Graph<int>> m_graph;
+    static std::shared_ptr<Engine> m_engine;
+    std::shared_ptr<Graph<int>> m_graph;
 };
 
 #endif // ENGINE_H

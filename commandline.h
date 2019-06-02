@@ -25,7 +25,7 @@ private:
 class ExecuteCommand
 {
 public:
-    std::unique_ptr<ICommand> findCommand(const std::string commandName);
+    std::shared_ptr<ICommand> findCommand(const std::string commandName);
     void execute(const std::string& str);
 };
 #endif // COMMANDLINE_H

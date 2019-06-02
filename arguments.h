@@ -2,37 +2,47 @@
 #define ARGUMENTS_H
 #include <string>
 
-template <class T>
 class Arguments
 {
 public:
+	Arguments() {}
+	Arguments(const std::string name) : m_name(name) {}
     virtual ~Arguments() = 0;
     virtual void parseValue(const std::string& str) = 0;
-    void setValue(const T& value)
-    {
-        m_value = value;
-    }
-
-    inline T getValue() const
-    {
-        return m_value;
-    }
     std::string getName() {return m_name;}
     void setName(const std::string& name) {m_name = name;}
 
+
 protected:
-    T m_value;
     std::string m_name;
 };
 
-template <class T>
-Arguments<T>::~Arguments()
-{}
 
-class IntArg : public Arguments<int>
+
+class IntArg : public Arguments
 {
 public:
+	IntArg() {}
+	IntArg(const std::string name) : Arguments(name) {}
     void parseValue(const std::string& str) override;
+	int getValue() { return m_value; }
+	void setValue(int value) { m_value = value; }
+
+private:
+	int m_value;
+};
+
+class StringArg : public Arguments
+{
+public:
+	StringArg() {}
+	StringArg(const std::string name) : Arguments(name) {}
+	void parseValue(const std::string& str) override;
+	std::string getValue() { return m_value; }
+	void setValue(int value) { m_value = value; }
+
+private:
+	std::string m_value;
 };
 
 #endif // ARGUMENTS_H

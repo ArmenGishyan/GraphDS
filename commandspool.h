@@ -1,4 +1,3 @@
-
 #ifndef COMMANDSPOOL_H
 #define COMMANDSPOOL_H
 
@@ -17,26 +16,24 @@ private:
     CommandsPool();
 
 public:
-    template<class T>
-    static void generateCommand();
     static void init();
     static CommandsPool* getInstance();
-    std::unique_ptr<ICommand> findCommand(const std::string& str);
+    std::shared_ptr<ICommand> findCommand(const std::string& str);
 
 private:
-    void registrateCommand(const std::string& name, std::unique_ptr<ICommand> command);
+	template <class T>
+    void registrateCommand();
 
 private:
-    std::map<std::string, std::unique_ptr<ICommand>> m_commandPoolStorage;
+    std::map<std::string, std::shared_ptr<ICommand>> m_commandPoolStorage;
     static CommandsPool* m_commandPool;
     static std::mutex m_mutex;
 };
 
 template <class T>
-void CommandsPool::generateCommand()
+void CommandsPool::registrateCommand()
 {
-    CommandsPool* pool = CommandsPool::getInstance();
-    pool->registrateCommand(T::getName(), std::unique_ptr<T>());
+	m_commandPoolStorage[T::getName()] = std::make_shared<T>();
 }
 
 #endif // COMMANDSPOOL_H

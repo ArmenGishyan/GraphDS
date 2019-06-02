@@ -18,7 +18,7 @@ void CommandLine::exec()
     while (m_status == Status::RUNNING) {
         std::cout<<">>";
         std::string str;
-        std::cin>>str;
+		std::getline(std::cin, str);
         m_execCommand->execute(str);
     }
 }
@@ -29,7 +29,7 @@ void ExecuteCommand::execute(const std::string &str)
         assert(!str.empty());
     }
     std::vector<std::string> vector = Helper::splitString(str);
-    std::unique_ptr<ICommand> command = findCommand(vector[0]);
+    std::shared_ptr<ICommand> command = findCommand(vector[0]);
     if(Application::getMode() == Application::Mode::DEBUG) {
         assert(command.get()!= nullptr);
     }
@@ -39,8 +39,8 @@ void ExecuteCommand::execute(const std::string &str)
 
 }
 
-std::unique_ptr<ICommand> ExecuteCommand::findCommand(const std::string commandName)
+std::shared_ptr<ICommand> ExecuteCommand::findCommand(const std::string commandName)
 {
     CommandsPool* cPool = CommandsPool::getInstance();
-    return std::move(cPool->findCommand(commandName));
+    return cPool->findCommand(commandName);
 }

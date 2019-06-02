@@ -1,0 +1,2 @@
+create_graph -node_count 5
+print

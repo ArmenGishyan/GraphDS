@@ -7,19 +7,31 @@
 #include <set>
 #include "commandspool.h"
 #include "commandline.h"
+//#include <opencv2/opencv.hpp>
+#include <iostream>
+//#include <opencv2/core/mat.hpp>
+#include "graphnode.h"
 
+//using namespace cv;
+using namespace std;
 
 int main(int argc, char *argv[])
 {
-  //  QApplication a(argc, argv);
-  //  engine.createGraph<int, Rectangle>();
-  //  engine.findPath<Rectangle>();
-  //  MainWindow w;
-  //  w.show();
+	//std::cout << "dcdsc";
+	//Mat img = imread("C:\\Users\\mikod\\Downloads\\varpet.jpg");
+	//namedWindow("image", WINDOW_NORMAL);
+	//imshow("image", img);
+	//waitKey(0);
+
+  //QApplication a(argc, argv);
+  //engine.createGraph<int, Rectangle>();
+  //engine.findPath<Rectangle>();
+  //MainWindow w;
+  //w.show();
     CommandsPool::init();
     CommandLine cLine;
     cLine.exec();
-
+	
 	Graph<int> obj;
     Node<int>* ccA = new Node<int>("A");
     Node<int>* ccB = new Node<int>("B");
@@ -29,7 +41,7 @@ int main(int argc, char *argv[])
     Node<int>* ccF = new Node<int>("F");
     Node<int>* ccX = new Node<int>("X");
     Node<int>* ccY = new Node<int>("Y");
-
+	
     obj.addNode(ccA);
     obj.addNode(ccB);
     obj.addNode(ccC);
@@ -38,7 +50,7 @@ int main(int argc, char *argv[])
     obj.addNode(ccF);
     obj.addNode(ccX);
     obj.addNode(ccY);
-
+	
     obj.connNodes(ccA, ccB, 1);
     obj.connNodes(ccB, ccC, 1);
     obj.connNodes(ccC, ccD, 1);
@@ -48,52 +60,31 @@ int main(int argc, char *argv[])
     obj.connNodes(ccX, ccY, 2);
     obj.connNodes(ccY, ccF, 2);
     obj.connNodes(ccA, ccF, 10);
-
-
-//	Node<int>* cc5 = new Node<int>("4");
-//	Node<int>* cc6 = new Node<int>("5");
-
-
-//	obj.addNode(cc1);
-//	obj.addNode(cc2);
-//	obj.addNode(cc3);
-//	obj.addNode(cc4);
-//	obj.addNode(cc5);
-//	obj.addNode(cc6);
-
-  //  obj.connNodes(cc1, cc2);
-  //  obj.connNodes(cc2, cc3);
-  //  obj.connNodes(cc3, cc1);
-  ////  obj.connNodes(cc2, cc5);
-  //  obj.connNodes(cc2, cc4);
-   // obj.connNodes(cc3, cc5);
-   // obj.connNodes(cc4, cc5);
-   // obj.connNodes(cc4, cc6);
-   // obj.connNodes(cc5, cc6);
-
+	
+	
     //std::vector<Node<int>*> shortVec = ShortestPathProblem<int>::shortestPath(obj, ccA, ccF);
-    std::cout << "------------------Shortest Path---------------------- " << std::endl;
-
-  //  std::for_each(shortVec.begin(), shortVec.end(), [](Node<int>* it) {std::cout << "<< " << it->name(); });
-    std::cout << std::endl;
-
+    //std::cout << "------------------Shortest Path---------------------- " << std::endl;
+	//
+    //std::for_each(shortVec.begin(), shortVec.end(), [](Node<int>* it) {std::cout << "<< " << it->name(); });
+    //std::cout << std::endl;
+	
     std::vector<Node<int>*> nodes = obj.BFS();
     std::cout << "------------------BFS---------------------- " << std::endl;
-
+	
     std::for_each(nodes.begin(), nodes.end(), [](Node<int>* it) {std::cout << "<< " << it->name(); });
     std::cout << std::endl;
     std::vector<int> vec;
     std::cout << "-----------------DFS--------------------- " << std::endl;
-
+	
     std::vector<Node<int>*> list = obj.DFS();
     std::for_each(list.begin(), list.end(), [](Node<int>* it) {std::cout << "<< " << it->name(); });
-
+	
     std::cout << "\n-----------------print--------------------- " << std::endl;
-
+	
 	obj.print();
-
-
-
-
+	
+	
+	
+	
     return 0;
 }
