@@ -121,3 +121,54 @@ std::unique_ptr<ICommand> SourceFile::getInstance() const
 	return std::make_unique<SourceFile>();
 }
 
+HasEulerianCircle::HasEulerianCircle()
+{
+	m_graphName.setName("-graph_name");
+}
+
+void HasEulerianCircle::execute()
+{
+	std::shared_ptr<Engine> engine = Engine::getInstance();
+	std::string massage;
+	bool hasEulerianCircle = false;
+	
+	if (m_graphName.getName() == "")
+	{
+		hasEulerianCircle = engine->hasEulerianCircle();
+	}
+	else {
+		hasEulerianCircle = engine->hasEulerianCircle(m_graphName.getName());
+	}
+	
+
+	if (hasEulerianCircle)
+	{
+		massage = "yes\n";
+	}
+	else
+	{
+		massage = "no\n";
+	}
+	std::cout << massage;
+}
+
+void HasEulerianCircle::parseArguments(const std::vector<std::string>& str)
+{
+	std::vector<std::string>::const_iterator it =
+		std::find(str.begin(), str.end(), m_graphName.getName());
+	if (it < str.end() - 1) {
+		m_graphName.setValue(*(++it));
+	}
+	else if(it == str.end() - 1) {
+		m_graphName.setName("");
+	}
+	else {
+		assert(false);
+	}
+
+}
+
+std::unique_ptr<ICommand> HasEulerianCircle::getInstance() const
+{
+	return std::make_unique<HasEulerianCircle>();
+}

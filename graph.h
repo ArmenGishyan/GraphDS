@@ -30,24 +30,6 @@ namespace std
 			return x;
 		}
     };
-
-   // template <>
-   // template<class T>
-   // struct remove_reference<std::pair<Node<T>*, int>>
-   // {
-
-   //     remove_reference& operator = (const remove_reference& obj)
-   //     {
-   //        return *this;
-   //     }
-
-   // };
-
-   // template <>
-   // std::pair<Node<int>*, int>&& forward<std::pair<Node<int>*, int>&&>(std::pair<Node<int>*, int>&& param) noexcept
-   // {
-   //         return move(param);
-   // }
 }
 
 
@@ -60,15 +42,19 @@ public:
     typedef std::pair<Node<E>*, AdjListType> RowType;
 
 public:
-
     template<class T> friend class ShortestPathProblem;
 	Graph() = default;
 	Graph(int nodeCount);
 	void addNode(Node<E>*);
     bool connNodes(Node<E>*, Node<E>*, int weight = 1);
     bool connNodes(const std::string node1, const std::string node2, int weight = 1);
+	int degreeOfNode(const std::string& name) const;
+	bool isConnected(bool skipZeroDegree) const;
+	bool hasEulerianCircle() const;
 	std::vector<Node<E>*> BFS() const;
 	std::vector<Node<E>*> DFS() const;
+	std::vector<Node<E>*> DFS(const std::string& startNode) const;
+	std::vector<Node<E>*> DFS(const std::string& startNode, std::map<Node<E>*, bool>& visited) const;
     void deleteNode(const Node<E>* node, bool force = false);
     std::vector<Node<E>*> getNodes() const;
     Node<E>* getNode(const std::string& name) const;
@@ -86,9 +72,6 @@ template<class T>
 void Graph<T>::addNode(Node<T>* node)
 {
     m_adj.push_back(RowType(node, AdjListType()));
- //   AdjListType nodeTemp;
- //   nodeTemp.insert(std::pair<Node<T>*, int> (node, 0));
-    //m_adj.push_back(nodeTemp);
 }
 
 template<class T>
@@ -180,16 +163,19 @@ std::vector<Node<T>*> Graph<T>::BFS() const
 }
 
 template<class T>
-std::vector<Node<T>* > Graph<T>::DFS() const
+std::vector<Node<T>* > Graph<T>::DFS(const std::string& startNode, std::map<Node<T>*, bool>& visited) const
 {
 	std::vector<Node<T>* > dfsList;
 	if (m_adj.empty()) {
 		return dfsList;
 	}
-    std::map<Node<T>*, bool> visited;
+
 	std::stack<Node<T>* > st;
 
-    auto firstNode = m_adj.begin()->first;
+	Node<T>* firstNode = getNode(startNode);
+	if (!firstNode) {
+		return dfsList;
+	}
     st.push(firstNode);
     dfsList.push_back(firstNode);
     visited[firstNode] = true;
@@ -218,15 +204,33 @@ std::vector<Node<T>* > Graph<T>::DFS() const
 				st.pop();
 			}
 		}
+
 	}
 	return dfsList;
-
 }
 
+template<class T>
+std::vector<Node<T>* > Graph<T>::DFS(const std::string& startNode) const
+{
+	std::map<Node<T>*, bool> visited;
+	return DFS(startNode, visited);
+}
+
+template<class T>
+std::vector<Node<T>* > Graph<T>::DFS() const
+{
+	Node<T>* start = nullptr;
+	if (!m_adj.empty()) {
+		start = m_adj.begin()->first;
+	}
+	if (start) {
+		DFS(start->name());
+	}
+	return  std::vector<Node<T>* >();
+}
 template <class T>
 void Graph<T>::deleteNode(const Node<T>* node, bool force)
 {
-
     for(auto i = m_adj.begin(); i != m_adj.end(); ++i)
     {
         if(i->first == node) {
@@ -247,7 +251,6 @@ void Graph<T>::deleteNode(const Node<T>* node, bool force)
             ++setItStart;
         }
     }
-
 }
 
 template <class T>
@@ -313,4 +316,59 @@ Node<T>* Graph<T>::getNode(const std::string& name) const
 
     return nullptr;
 }
+
+template<class T>
+int Graph<T>::degreeOfNode(const std::string& name) const
+{
+	for (auto it = m_adj.begin(); it != m_adj.end(); ++it) {
+		if (it->first->name() == name) {
+			return it->second.size();
+		}
+	}
+	return 0;
+}
+
+template<class T>
+bool Graph<T>::isConnected(bool skipZeroDegree) const
+{
+	std::map<Node<T>*, bool> visited;
+	std::vector<Node<T>*> dfs = DFS(m_adj.begin()->first->name());
+	int i = 0;
+	for (; i < dfs.size(); ++i) {
+		if (degreeOfNode(dfs[i]->name()) != 0)
+			break;
+	}
+	if (i == dfs.size()) {
+		dfs = DFS(dfs[0]->name(), visited);
+	}
+	else {
+		dfs = DFS(dfs[i]->name(), visited);
+	}
+
+	if (visited.size() == 1)
+		return false;
+
+	for (int i = 0; i < dfs.size(); ++i) {
+		if (visited[dfs[i]] == false && degreeOfNode(dfs[i]->name()) > 0) {
+			return false;
+		}
+	}	
+	
+	return true;
+
+}
+
+template<class T>
+bool Graph<T>::hasEulerianCircle() const
+{
+	if (!isConnected(true) )
+		return false;
+	std::vector<Node<T>*> dfs = DFS();
+	for (int i = 0; i < dfs.size(); ++i) {
+		if (degreeOfNode(dfs[i]->name()) % 2 != 0)
+			return false;
+	}
+	return true;
+}
+
 #endif

@@ -37,3 +37,11 @@ void Engine::connNodes(const std::string& first, const std::string& second)
 	}
 }
 
+bool Engine::hasEulerianCircle(const std::string& name)
+{
+	if (m_graph.get() != nullptr) {
+		return m_graph->hasEulerianCircle();
+	}
+	return false;
+}
+

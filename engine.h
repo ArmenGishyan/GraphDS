@@ -12,6 +12,7 @@ public:
     void createGraph(int nodeCount);
 	void printGraph() const;
 	void connNodes(const std::string& fisrt, const std::string& second);
+	bool hasEulerianCircle(const std::string& name = "current");
     static std::shared_ptr<Engine> getInstance();
     Engine();
 

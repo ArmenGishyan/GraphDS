@@ -1,2 +1,3 @@
 create_graph -node_count 5
 print
+has_eulerian_circle -graph_name 

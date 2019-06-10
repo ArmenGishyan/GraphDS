@@ -32,6 +32,7 @@ void CommandsPool::init()
 	pool->registrateCommand<Print>();
 	pool->registrateCommand<ConnectNodes>();
 	pool->registrateCommand<SourceFile>();
+	pool->registrateCommand<HasEulerianCircle>();
 }
 
 std::shared_ptr<ICommand> CommandsPool::findCommand(const std::string& str)

@@ -87,4 +87,24 @@ private:
 
 };
 
+class DFS : public ICommand
+{
+	
+};
+
+class HasEulerianCircle : public ICommand
+{
+public:
+	HasEulerianCircle();
+	static std::string getName() { return "has_eulerian_circle"; }
+	void execute() override;
+	void parseArguments(const std::vector<std::string>& str) override;
+	std::unique_ptr<ICommand> getInstance() const override;
+	void initArguments() override {}
+
+private:
+	StringArg m_graphName;
+
+};
+
 #endif // COMMANDS_H

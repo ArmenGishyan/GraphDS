@@ -39,7 +39,7 @@ public:
 	StringArg(const std::string name) : Arguments(name) {}
 	void parseValue(const std::string& str) override;
 	std::string getValue() { return m_value; }
-	void setValue(int value) { m_value = value; }
+	void setValue(const std::string& value) { m_value = value; }
 
 private:
 	std::string m_value;
