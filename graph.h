@@ -48,6 +48,7 @@ public:
 	void addNode(Node<E>*);
     bool connNodes(Node<E>*, Node<E>*, int weight = 1);
     bool connNodes(const std::string node1, const std::string node2, int weight = 1);
+	bool isNodesConnected(Node<E>* const first, Node<E>* const second) const;
 	int degreeOfNode(const std::string& name) const;
 	bool isConnected(bool skipZeroDegree) const;
 	bool hasEulerianCircle() const;
@@ -58,6 +59,8 @@ public:
     void deleteNode(const Node<E>* node, bool force = false);
     std::vector<Node<E>*> getNodes() const;
     Node<E>* getNode(const std::string& name) const;
+	bool hasCycle() const;
+	bool hasCycleUntil(Node<E>* const parent, Node<E>* const node, std::map<Node<E>*, bool>& visited) const;
 	void print() const;
 
 private:
@@ -363,6 +366,7 @@ bool Graph<T>::hasEulerianCircle() const
 {
 	if (!isConnected(true) )
 		return false;
+
 	std::vector<Node<T>*> dfs = DFS();
 	for (int i = 0; i < dfs.size(); ++i) {
 		if (degreeOfNode(dfs[i]->name()) % 2 != 0)
@@ -371,4 +375,57 @@ bool Graph<T>::hasEulerianCircle() const
 	return true;
 }
 
+template<class T>
+bool Graph<T>::hasCycle() const
+{
+	std::map<Node<T>*, bool> visited;
+	std::vector<Node<T>*> nodes = getNodes();
+
+	std::for_each(nodes.begin(), nodes.end(), [&visited](Node<T>* item) {visited[item] = false; });
+	std::queue<Node<T>*> queue;
+	std::vector<Node<T>*> BFSnods;
+
+	queue.push(m_adj.begin()->first);
+
+	while (!queue.empty())
+	{
+		Node<T>* node = queue.front();
+		BFSnods.push_back(node);
+		queue.pop();
+		visited[node] = true;
+		std::vector<Node<T>*> neighbors = getNeighbours(node);
+		for (const auto& item : neighbors) {
+			if (!visited[item]) {
+				visited[item] = true;
+				queue.push(item);
+
+				if (hasCycleUntil(node, item, visited))
+					return true;
+			}
+		}
+	}
+	return false;
+	
+}
+
+template <class T>
+bool Graph<T>::hasCycleUntil(Node<T>* const parent, Node<T>* const node, std::map<Node<T>*, bool>& visited) const
+{
+	std::vector<Node<T>*> neighbors = getNeighbours(node);
+	for (int i = 0; i < neighbors.size(); ++i)
+	{
+		if (neighbors[i]->name() == parent->name())
+			continue;
+		if (visited[neighbors[i]])
+			return true;
+	}
+	return false;
+}
+
+template <class T>
+bool Graph<T>::isNodesConnected(Node<T>* const first, Node<T>* const second) const
+{
+	// To Do
+	return true;
+}
 #endif

@@ -25,6 +25,9 @@ void CommandLine::exec()
 
 void ExecuteCommand::execute(const std::string &str)
 {
+	if (str.empty())
+		return;
+
     if(Application::getMode() == Application::Mode::DEBUG) {
         assert(!str.empty());
     }

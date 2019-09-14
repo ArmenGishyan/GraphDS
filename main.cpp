@@ -28,10 +28,11 @@ int main(int argc, char *argv[])
   //engine.findPath<Rectangle>();
   //MainWindow w;
   //w.show();
-    CommandsPool::init();
-    CommandLine cLine;
-    cLine.exec();
-	
+	std::cout << "log 2 = " << log2(0) << std::endl;
+	CommandsPool::init();
+	CommandLine cLine;
+	cLine.exec();
+	/*
 	Graph<int> obj;
     Node<int>* ccA = new Node<int>("A");
     Node<int>* ccB = new Node<int>("B");
@@ -53,10 +54,12 @@ int main(int argc, char *argv[])
 	
     obj.connNodes(ccA, ccB, 1);
     obj.connNodes(ccB, ccC, 1);
-    obj.connNodes(ccC, ccD, 1);
+   // obj.connNodes(ccC, ccD, 1);
+	obj.connNodes(ccD, ccA, 1);
+
     obj.connNodes(ccD, ccE, 1);
     obj.connNodes(ccE, ccF, 1);
-    obj.connNodes(ccA, ccX, 2);
+    //obj.connNodes(ccA, ccX, 2);
     obj.connNodes(ccX, ccY, 2);
     obj.connNodes(ccY, ccF, 2);
     obj.connNodes(ccA, ccF, 10);
@@ -81,10 +84,11 @@ int main(int argc, char *argv[])
 	
     std::cout << "\n-----------------print--------------------- " << std::endl;
 	
+	std::cout << "print = " << obj.hasCycle() << std::endl;
 	obj.print();
 	
 	
-	
+	*/
 	
     return 0;
 }
